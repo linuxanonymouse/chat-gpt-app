@@ -5,6 +5,6 @@ sudo pip install openai
 sudo pip install kivy
 sudo pip install openai==0.28
 # installations for windows
-pip install openai
+pip install openai\n
 pip install kivy
 pip install openai==0.28
