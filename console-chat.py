@@ -4,7 +4,7 @@ openai.api_key = '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'
 
 def chat_with_gpt(prompt):
     response = openai.Completion.create(
-        engine="text-davinci-003",
+        engine="babbage-002",
         prompt=prompt,
         max_tokens=100,
         temperature=0.7,
