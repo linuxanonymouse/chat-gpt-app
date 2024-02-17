@@ -12,7 +12,7 @@ from kivy.clock import Clock
 import openai
 import threading
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 class Message(BoxLayout):
     def __init__(self, text='', role='user', **kwargs):
@@ -34,10 +34,8 @@ class ChatBox(ScrollView):
         message_widget = Message(text=text, role=role, size_hint_y=None)
         self.layout.add_widget(message_widget)
 
-       
         self.layout.height = sum(child.height + 10 for child in self.layout.children)
 
-       
         self.scroll_to(message_widget)
 
 class GPTChatApp(App):
@@ -57,9 +55,8 @@ class GPTChatApp(App):
             layout.add_widget(self.chat_box)
             layout.add_widget(input_layout)
 
-           
             with layout.canvas.before:
-                Color(0, 0, 0, 1) 
+                Color(0, 0, 0, 1)
                 self.rect = Rectangle(size=Window.size, pos=layout.pos)
 
             layout.bind(size=self._update_rect, pos=self._update_rect)
@@ -77,7 +74,7 @@ class GPTChatApp(App):
 
     def on_button_press(self, instance):
         try:
-            print("massage sended to the chat gpt...")
+            print("message sent to the chat GPT...")
             if not self.is_responding:
                 user_input = self.text_input.text
                 user_message = f"{user_input}\n"
@@ -87,7 +84,7 @@ class GPTChatApp(App):
 
                 threading.Thread(target=self.process_response, args=(user_input,)).start()
 
-                self.text_input.text = ""  
+                self.text_input.text = ""
         except Exception as e:
             print(f"An exception occurred during button press: {e}")
 
@@ -95,9 +92,8 @@ class GPTChatApp(App):
         try:
             response = self.chat_with_gpt(user_input)
 
-            
             Clock.schedule_once(lambda dt: self.update_response(response))
-            
+
         except Exception as e:
             print(f"An exception occurred during process_response: {e}")
 
@@ -107,25 +103,25 @@ class GPTChatApp(App):
             self.chat_box.add_message(ai_message, role='ai')
 
         finally:
-           
             self.is_responding = False
 
     def chat_with_gpt(self, prompt):
-        try:
-            print("Chatting with GPT...")
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=prompt,
-                max_tokens=100,
-                temperature=0.7,
-                n=1,
-                stop=None,
-            )
-            print("Chatting with GPT successful.")
-            return response.choices[0].text.strip()
-        except Exception as e:
-            print(f"An exception occurred during chat_with_gpt: {e}")
-            return "Error in response"
+	    try:
+	        print("Chatting with GPT...")
+	        response = openai.Completion.create(
+	            engine="babbage-002",
+	            prompt=prompt,
+	            max_tokens=100,
+	            temperature=0.7,
+	            n=1,
+	            stop=None
+	        )
+
+	        print("Chatting with GPT successful.")
+	        return response.choices[0].text.strip()
+	    except openai.error.OpenAIError as e:
+	        print(f"OpenAI API error: {e}")
+	        return "Error in response"
 
 if __name__ == '__main__':
     try:
@@ -133,4 +129,4 @@ if __name__ == '__main__':
         GPTChatApp().run()
         print("App execution completed.")
     except KeyboardInterrupt:
-        print("Quitting..... bye. {e}")
+        print("Quitting... bye.")
