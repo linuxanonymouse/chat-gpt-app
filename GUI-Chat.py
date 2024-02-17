@@ -12,7 +12,7 @@ from kivy.clock import Clock
 import openai
 import threading
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 class Message(BoxLayout):
     def __init__(self, text='', role='user', **kwargs):
